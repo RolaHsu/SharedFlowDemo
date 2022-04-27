@@ -16,7 +16,19 @@ class PlayerItemDataSource {
     private val _sharedCurrentIndexFlow = MutableSharedFlow<Int>()
     val sharedCurrentIndexFlow = _sharedCurrentIndexFlow.asSharedFlow()
 
-    var items = mutableListOf("A", "B", "C", "D")
+    private var items: MutableList<String>
+
+    init {
+        items = mutableListOf("A", "B", "C", "D")
+    }
+
+    fun resetItems() {
+        items = mutableListOf("A", "B", "C", "D")
+        globalCoroutineScope.launch {
+            _sharedQueueFlow.emit(items)
+            _sharedCurrentIndexFlow.emit(0)
+        }
+    }
 
     fun updateCurrentIndex(index: Int) {
         globalCoroutineScope.launch {

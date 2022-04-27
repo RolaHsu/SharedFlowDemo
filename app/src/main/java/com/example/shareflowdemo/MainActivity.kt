@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var updateQueueBtn: Button
     private lateinit var updateIndexBtn: Button
+    private lateinit var clearBtn: Button
     private lateinit var outputTv: TextView
 
     var outputStr = ""
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         updateQueueBtn = findViewById(R.id.updateQueueBtn)
         updateIndexBtn = findViewById(R.id.updateIndexBtn)
+        clearBtn = findViewById(R.id.clearBtn)
         outputTv = findViewById(R.id.outputTv)
 
         dataSource.sharedQueueFlow.onEach { list ->
@@ -54,6 +56,12 @@ class MainActivity : AppCompatActivity() {
             logMessage("---- update index ----")
             val updateIndex = (0..3).random()
             dataSource.updateCurrentIndex(updateIndex)
+        }
+
+        clearBtn.setOnClickListener {
+            dataSource.resetItems()
+            outputStr = ""
+            outputTv.text = outputStr
         }
 
     }
